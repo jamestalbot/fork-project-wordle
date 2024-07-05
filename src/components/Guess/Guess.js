@@ -1,23 +1,25 @@
 import React from 'react';
+import { checkGuess } from '../../game-helpers';
 
-function getLetters(guessData) {
-  let letters = [];
-  [...guessData.text].forEach((element) =>
-    letters.push({
-      id: crypto.randomUUID(),
-      letter: element,
-      class: 'cell',
-    })
-  );
+function Guess({ guess, answer }) {
+  function getLetters(text) {
+    let letters = [];
+    let checkedGuess = checkGuess(text, answer)
+    checkedGuess.forEach((element) =>
+      letters.push({
+        id: crypto.randomUUID(),
+        letter: element.letter,
+        status: element.letter === ' ' ? '' : element.status,
+      })
+    );
 
-  return letters;
-}
+    return letters;
+  }
 
-function Guess({ guessData }) {
   return (
     <p className="guess">
-      {getLetters(guessData).map((letter, index) => (
-        <span className={letter.class} key={letter.id}>{letter.letter}</span>
+      {getLetters(guess.text).map((letter) => (
+        <span className={'cell ' + letter.status} key={letter.id}>{letter.letter}</span>
       ))}
     </p>
   );

@@ -38,6 +38,7 @@ function Game() {
   return (
     <div className="game-wrapper">
       <GuessResults
+        answer={answer}
         guessList={guessList}
       />
       <GuessInput
