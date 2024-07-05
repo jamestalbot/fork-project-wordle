@@ -161,6 +161,53 @@ h1 {
   outline-offset: 4px;
 }
 
+.guess-keyboard-row {
+  display: flex;
+  margin: 0 auto 4px;
+}
+
+.guess-keyboard-key {
+  font-size: 1.25em;
+  font-weight: 700;
+  border: 0;
+  padding: 0;
+  margin: 0 4px 0 0;
+  height: 44px;
+  max-width: 33px;
+  border-radius: 4px;
+  background-color: var(--color-gray-900);
+  color: black;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.guess-keyboard-key:last-of-type {
+  margin: 0;
+}
+
+.guess-keyboard-key[data-state='unused'] {
+  background-color: var(--color-gray-900);
+  color: black;
+}
+
+.guess-keyboard-key[data-state='correct'] {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.guess-keyboard-key[data-state='missing'] {
+  background-color: var(--color-gray-300);
+  color: white;
+}
+
+.guess-keyboard-key[data-state='present'] {
+  background-color: var(--color-warning);
+  color: white;
+}
+
 .banner {
   position: fixed;
   left: 0;

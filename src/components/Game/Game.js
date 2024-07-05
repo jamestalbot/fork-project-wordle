@@ -13,7 +13,7 @@ const answer = sample(WORDS);
 // To make debugging easier, we'll log the solution in the console.
 console.info({ answer });
 
-let emptyGuessList = [];
+const emptyGuessList = [];
 range(NUM_OF_GUESSES_ALLOWED).forEach(() => {
   const newGuess = {
     id: crypto.randomUUID(),
@@ -22,10 +22,19 @@ range(NUM_OF_GUESSES_ALLOWED).forEach(() => {
   emptyGuessList.push(newGuess);
 });
 
+const alphabet = [];
+[...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'].forEach((element) => {
+  alphabet.push({
+    letter: element,
+    status: 'unused',
+  });
+});
+
 function Game() {
   const [guessList, setGuessList] = React.useState(emptyGuessList);
   const [guessCount, setGuessCount] = React.useState(0);
   const [gameStatus, setGameStatus] = React.useState('active');
+  const [keysStatus, setKeysStatus] = React.useState(alphabet);
 
   function handleGuess(guessText) {
     let nextGuessList = [...guessList]
@@ -33,6 +42,28 @@ function Game() {
 
     setGuessCount(guessCount + 1);
     setGuessList(nextGuessList);
+
+    let nextKeysStatus = [...keysStatus];
+    keysStatus.forEach(({letter, status}, index) => {
+      if (guessText.search(letter) >= 0) {
+        console.log('letter in guessText');
+        if (answer.search(letter) >= 0) {
+          console.log('letter in answer');
+          if (answer.search(letter) === guessText.search(letter)) {
+            console.log('setting letter to correct');
+            nextKeysStatus[index].status = 'correct';
+          } else if (status === 'unused') {
+            console.log('setting letter to present');
+            nextKeysStatus[index].status = 'present';
+          }
+        } else {
+          console.log('setting letter to missing');
+          nextKeysStatus[index].status = 'missing';
+        }
+      }
+    });
+    console.log(nextKeysStatus);
+    setKeysStatus(nextKeysStatus);
 
     if (answer === guessText) {
       setGameStatus('happy');
@@ -42,7 +73,7 @@ function Game() {
   }
 
   return (
-    <div className="game-wrapper">
+    <>
       <GuessResults
         answer={answer}
         guessList={guessList}
@@ -50,13 +81,14 @@ function Game() {
       <GuessInput
         handleGuess={handleGuess}
         isGameOver={gameStatus !== 'active'}
+        keysStatus={keysStatus}
       />
       <EndGameBanner
         answer={answer}
         guessCount={guessCount}
         gameStatus={gameStatus}
       />
-    </div>
+    </>
   );
 }
 
