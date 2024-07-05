@@ -1,10 +1,14 @@
 import React from 'react';
+import Guess from '../Guess'
 
 function GuessResults({ guessList }) {
   return (
       <div className="guess-results">
         {guessList.map((guess) => (
-          <p className="guess" key={guess.id}>{guess.text}</p>
+          <Guess
+            key={crypto.randomUUID()}
+            guessData={guess}
+          />
     ))}
       </div>
   );
