@@ -45,24 +45,18 @@ function Game() {
 
     let nextKeysStatus = [...keysStatus];
     keysStatus.forEach(({letter, status}, index) => {
-      if (guessText.search(letter) >= 0) {
-        console.log('letter in guessText');
-        if (answer.search(letter) >= 0) {
-          console.log('letter in answer');
-          if (answer.search(letter) === guessText.search(letter)) {
-            console.log('setting letter to correct');
+      if (guessText.indexOf(letter) >= 0) {
+        if (answer.indexOf(letter) >= 0) {
+          if (answer.indexOf(letter) === guessText.indexOf(letter)) {
             nextKeysStatus[index].status = 'correct';
           } else if (status === 'unused') {
-            console.log('setting letter to present');
             nextKeysStatus[index].status = 'present';
           }
         } else {
-          console.log('setting letter to missing');
           nextKeysStatus[index].status = 'missing';
         }
       }
     });
-    console.log(nextKeysStatus);
     setKeysStatus(nextKeysStatus);
 
     if (answer === guessText) {

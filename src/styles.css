@@ -98,6 +98,7 @@ h1 {
 
 .cell {
   position: relative;
+  max-width: 70px;
   width: 20%;
   display: grid;
   place-content: center;
