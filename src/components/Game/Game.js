@@ -8,11 +8,6 @@ import GuessInput from '../GuessInput';
 import GuessResults from '../GuessResults';
 import EndGameBanner from '../EndGameBanner';
 
-// Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
-
 const emptyGuessList = [];
 range(NUM_OF_GUESSES_ALLOWED).forEach(() => {
   const newGuess = {
@@ -35,6 +30,25 @@ function Game() {
   const [guessCount, setGuessCount] = React.useState(0);
   const [gameStatus, setGameStatus] = React.useState('active');
   const [keysStatus, setKeysStatus] = React.useState(alphabet);
+  const [answer, setAnswer] = React.useState(sample(WORDS));
+  // To make debugging easier, we'll log the solution in the console.
+  console.info({ answer });
+
+  function gameRestart() {
+    let newKeysStatus = [...keysStatus];
+    newKeysStatus.forEach((key) => key.status = 'unused');
+    setKeysStatus(newKeysStatus);
+
+    let newGuessList = [...guessList];
+    newGuessList.forEach((guess) => guess.text = '     ');
+    setGuessList(newGuessList);
+    setGuessCount(0);
+    setGameStatus('active');
+    setAnswer(sample(WORDS));
+
+    // BUGBUG: find the "react way" of setting focus
+    setTimeout(() => document.getElementById('guess-input').focus(), 750);
+  }
 
   function handleGuess(guessText) {
     let nextGuessList = [...guessList]
@@ -81,6 +95,7 @@ function Game() {
         answer={answer}
         guessCount={guessCount}
         gameStatus={gameStatus}
+        gameRestart={gameRestart}
       />
     </>
   );
